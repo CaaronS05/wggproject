@@ -8,3 +8,4 @@ Route::get('/', function () {
 });
 
 Route::resource('items', ItemController::class)->except(['show']);
+Route::get('history', [ItemController::class, 'history'])->name('items.history');

@@ -113,7 +113,7 @@
             /* Glass card system */
             --bg-card:          rgba(255,255,255,0.12);
             --bg-card-solid:    rgba(255,255,255,0.18);
-            --bg-parch:         rgba(200,232,244,0.08);
+            --bg-parch:         rgba(200, 232, 244, 0.08);
             --bg-input:         rgba(255,255,255,0.15);
             --border-card:      rgba(200,232,244,0.3);
             --border-input:     rgba(200,232,244,0.4);
@@ -1209,6 +1209,9 @@
                          || window.location.pathname === '/items'
                          || window.location.pathname.match(/^\/items(\?.*)?$/);
 
+            // Skip loader if coming from store/update (set by create/edit form submit)
+            const skipLoader = sessionStorage.getItem('ss_skip_loader');
+            if (skipLoader) sessionStorage.removeItem('ss_skip_loader');
 
             const loader   = document.getElementById('page-loader');
             const curtain  = document.getElementById('loader-curtain');
@@ -1217,8 +1220,8 @@
             const main     = document.querySelector('main');
             const footer   = document.querySelector('footer');
 
-            if (!isIndex || !loader) {
-                // Not index, or already seen loader this session — skip, show content instantly
+            if (!isIndex || !loader || skipLoader) {
+                // Not index, or returning from form submit — skip loader
                 if (content) gsap.set(content, { opacity: 1 });
                 return;
             }
